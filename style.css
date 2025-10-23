@@ -1,0 +1,16 @@
+/* .scene { display: none; }
+.scene.active { display: block; } */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary-color:rgb(225, 159, 53);
+    --primary-color:rgb(46, 32, 6);
+    --accent-color:rgb(24, 190, 30);
+    --danger-color:rgb(255, 0, 0);
+
+}

@@ -46,6 +46,44 @@ window.addEventListener('DOMContentLoaded', () => {
     renderMercado();
   });
 
+ const enemigos = [
+    new Enemigo('Goblin', 12, 50),
+    new Enemigo('Orco', 25, 80),
+    new JefeFinal('Dragón rojo', 40, 120, 'Llama infernal', 1.8),
+  ];
+
+
+  // escena de mercado
+  const selecMercado = [];
+  function renderMercado() {
+    const containerMercado = document.getElementById('market-container');
+    containerMercado.innerHTML = mercado.map((p, i) => `
+      <div class="producto" data-index="${i}">
+        <p>${p.mostrarProducto()}</p>
+        <button class="select-btn">Seleccionar</button>
+      </div>`).join('');
+
+    document.querySelectorAll('.select-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const i = e.target.parentNode.dataset.index;
+        const producto = mercado[i];
+        if (selecMercado.includes(producto)) {
+          selecMercado.splice(selecMercado.indexOf(producto), 1);
+          e.target.textContent = 'Seleccionar';
+        } else {
+          selecMercado.push(producto);
+          e.target.textContent = 'Quitar';
+        }
+      });
+    });
+
+    document.getElementById('btn-to-battle').addEventListener('click', () => {
+      selecMercado.forEach(p => jugador.añadirItem(p));
+      showScene('scene-3');
+      renderJugador();
+    });
+  }
+
 
  
 });

@@ -1,69 +1,228 @@
-/* .scene { display: none; }
-.scene.active { display: block; } */
+.scene { display: none; }
+.scene.active { display: block; }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-:root {
-    --primary-color: rgb(225, 159, 53);
-    --secondary-color: rgb(46, 32, 6);
-    --accent-color: rgb(24, 190, 30);
-    --danger-color: rgb(255, 0, 0);
-
-}
 
 body {
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-}
-main{
-    margin: 64px;
-}
-main >div{
-    height: 100%;
-    background-color: blue;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.5;
+  padding: 30px 20px;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-#scene1-container:first-child{
-    height: 40%;
+/* Encabezado */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
-footer{
-    display: flex;
+
+#title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* Escenas */
+.scene {
+  display: none;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+
+.scene.active {
+  display: block;
+}
+
+/* Botones */
+button {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  border: none;
+  padding: 0.7rem 1.3rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+button:hover {
+  background-color: #34495e;
+}
+
+button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+input[type="text"] {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 0.3rem;
+}
+
+/* Textos y etiquetas */
+label {
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+#player-stats p,
+#market-container div,
+#enemies-container div {
+  margin-bottom: 0.8rem;
+}
+
+/* Contenedores de productos y enemigos */
+#market-container .producto,
+#enemies-container .enemy-card {
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  border-radius: 6px;
+  background: #fafafa;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+
+/* Encabezados escenas (h2) */
+main h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+/* Espaciado botones en línea */
+#scene-1 button {
+  margin-right: 15px;
+}
+
+/* Scroll si mercado o enemigos crecen mucho */
+#market-container,
+#enemies-container,
+#battle-output,
+#player-current,
+#final-result {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Scroll barra suave */
+#market-container::-webkit-scrollbar,
+#enemies-container::-webkit-scrollbar,
+#battle-output::-webkit-scrollbar,
+#player-current::-webkit-scrollbar,
+#final-result::-webkit-scrollbar {
+  width: 8px;
+}
+
+#market-container::-webkit-scrollbar-thumb,
+#enemies-container::-webkit-scrollbar-thumb,
+#battle-output::-webkit-scrollbar-thumb,
+#player-current::-webkit-scrollbar-thumb,
+#final-result::-webkit-scrollbar-thumb {
+  background-color: #bdc3c7;
+  border-radius: 4px;
+}
+
+/* Responsividad básica */
+@media (max-width: 400px) {
+  body {
+    padding: 20px 10px;
+  }
+
+  button {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+
+
+
+/* :root{
+  --primary-color: rgb(94, 64, 15);
+  --secondary-color: rgb(218, 186, 134);
+  --accent-color: rgb(194, 210, 73);
+  --danger-color: rgb(208, 64, 38);
+}
+
+body{
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+main{
+  margin: 64px;
+}
+
+main>div{
+  height: 100%;
+  background-color: blue;
+}
+
+#scene-1{
+  display: flex;
+  justify-content: center;
+}
+
+#scene-1-container:first-child{
+  height: 40%;
+  background-color: orange;
+}
+
+footer, header{
+  display: flex;
+  justify-content: center;
 }
 
 #inventory-container{
-    background-color:var(--secondary-color);
-    display: flex;
-    grid-template-columns: repeat(6, 1fr);
-    margin: 8px 20%;
-    padding:8px;
-    gap: 5px;
-
- 
-  
+  background-color: var(--primary-color);
+  display: flex;
+  margin: 8px 20%;
+  padding: 8px;
+  gap: 4px;
 }
 
 .item{
-    background-color:var(--primary-color);
-    aspect-ratio: 1/ 1;
-    border: 1px solid black;
-    border-radius: 10px;
-    width: 100px;
-    height: 100px;
-
+  background-color: var(--secondary-color);
+  /* aspect-ratio: 1 / 1; */
+  /* border: 1px solid black;
+  width: 100px;
 }
 
 .item img{
-    width: 100%;
+  width: 100%;
 }
 
-@media ( width< 640px){
-    #inventory-container{ 
-    grid-template-columns: repeat(3, 1fr);}
+@media (width < 640px) {
+  #inventory-container{
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
-
-
+ */ 

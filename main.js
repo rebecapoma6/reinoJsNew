@@ -8,10 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let jugador;
   document.getElementById('btn-create-player').addEventListener('click', () => {
-    const nombreInput = document.getElementById('player-name-input');
-    const labelInput = document.querySelector('label[for="player-name-input"]');
-    const btnCreate = document.getElementById('btn-create-player');
-
+    const ocultarForm = document.getElementById('ocultar');
     const nombre = document.getElementById('player-name-input').value.trim();
     if (!nombre) {
       alert('Por favor, introduce tu nombre.');
@@ -28,11 +25,8 @@ window.addEventListener('DOMContentLoaded', () => {
       <p>⚔️ Ataque: ${jugador.ataqueTotal}</p>
       <p>🛡️ Defensa: ${jugador.defensaTotal}</p>
     `;
+    ocultarForm.style.display = 'none';
 
-
-    labelInput.style.display = 'none'; // ocultamos con el none 
-    nombreInput.style.display = 'none';
-    btnCreate.style.display = 'none';
     alert(`Jugador ${jugador.nombre} creado. Presiona CONTINUAR para ir al mercado.`);
   });
 

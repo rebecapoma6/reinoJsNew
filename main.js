@@ -79,5 +79,16 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
 
+  function renderJugador() {
+    const estadoJugador = document.getElementById('player-current');
+    estadoJugador.innerHTML = jugador.mostrarJugador();
+
+    const btnEnemigos = document.getElementById('btn-to-enemies');
+    btnEnemigos.onclick = () => {
+      showScene('scene-4');
+      renderEnemigos();
+    };
+  }
+
  
 });

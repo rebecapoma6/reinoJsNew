@@ -90,5 +90,56 @@ window.addEventListener('DOMContentLoaded', () => {
     };
   }
 
+  
+  function renderEnemigos() {
+    const containerEnemigo = document.getElementById('enemies-container');
+    containerEnemigo.innerHTML = enemigos
+      .map(enemigoBatlla => `
+        <div class="enemy-card">
+          <h3>${enemigoBatlla.nombre}</h3>
+          <p>Tipo: ${enemigoBatlla.tipo}</p>
+          <p>ATQ: ${enemigoBatlla.ataque}</p>
+          <p>HP: ${enemigoBatlla.vida}</p>
+          ${enemigoBatlla.tipo === 'jefe' ? `<p>🔥 Habilidad: ${enemigoBatlla.habilidadEspecial}</p>` : ''}
+        </div>`
+      )
+      .join('');
+
+    document.getElementById('btn-to-combat').onclick = () => {
+      showScene('scene-5');
+      renderBatallas();
+    };
+  }
+
+  let index = 0;
+  function renderBatallas() {
+    if (index >= enemigos.length) {
+      showScene('scene-6');
+      renderResultado();
+      return;
+    }
+    const enemigo = enemigos[index];
+    const resultado = batalla(jugador, enemigo);
+    document.getElementById('battle-output').innerHTML = `
+      <h3>Batalla ${index + 1}</h3>
+      <p>${jugador.nombre} vs ${enemigo.nombre}</p>
+      <p>Ganador: ${resultado.ganador}</p>
+      <p>+${resultado.puntosGanados} puntos</p>
+    `;
+    index++;
+    document.getElementById('btn-next-battle').onclick = renderBatallas;
+  }
+
+  // escena de resultado final 
+  function renderResultado() {
+    const nivel = agruparPorNivel([jugador], 250);
+    const cont = document.getElementById('final-result');
+    const esPro = nivel.pro?.length > 0;
+    cont.innerHTML = `
+      <h2>${esPro ? '🏆 Eres un PRO 🏆' : '💀 Rookie 💀'}</h2>
+      <p>Puntos totales: ${jugador.puntos}</p>
+    `;
+    document.getElementById('btn-restart').onclick = () => location.reload();
+  }
  
 });

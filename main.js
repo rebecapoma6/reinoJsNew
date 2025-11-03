@@ -40,7 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
     renderMercado();
   });
 
- const enemigos = [
+
+const enemigos = [
     new Enemigo('Goblin', 12, 50),
     new Enemigo('Orco', 25, 80),
     new JefeFinal('Dragón rojo', 40, 120, 'Llama infernal', 1.8),
@@ -77,7 +78,6 @@ window.addEventListener('DOMContentLoaded', () => {
       renderJugador();
     });
   }
-
 
   function renderJugador() {
     const estadoJugador = document.getElementById('player-current');

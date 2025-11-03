@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^4.0.5"
+  },
+    "scripts": {
+    "docs": "jsdoc -c jsdoc.json"
+  }
+
+}
+

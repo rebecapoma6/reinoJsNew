@@ -1,4 +1,4 @@
-import { Producto } from './Producto.js';
+import { Producto } from './producto.js';
 
 export const mercado = [
   new Producto('Espada corta', 120, 'común', 'arma', { ataque: 8 }),

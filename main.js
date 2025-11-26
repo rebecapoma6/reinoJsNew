@@ -3,7 +3,7 @@ import { Enemigo, JefeFinal } from './modules/enemigos.js';
 import { mercado } from './modules/mercado.js';
 import { batalla, agruparPorNivel } from './modules/ranking.js';
 import { showScene } from './utils/scene.js';
-import { groupBy } from './utils/utils.js';
+import { EUR, groupBy } from './utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -60,9 +60,17 @@ const enemigos = [
       </div>`).join('');
 
 
+const containerTotal = document.createElement("div");
+containerTotal.id = "market-total";
+containerTotal.innerHTML = `<h3>Total: 0 €</h3>`;
+containerMercado.appendChild(containerTotal);
+
+function actulizarTotal() {
+  const total = selecMercado.reduce((acc, item) => acc + item.precio,0);
+  containerTotal.innerHTML = `<h3>Total: ${EUR.format(total)}</h3>`;
+}
 
 
-      
 
     document.querySelectorAll('.select-btn').forEach(btn => {
       btn.addEventListener('click', e => {
@@ -75,15 +83,22 @@ const enemigos = [
           selecMercado.push(producto);
           e.target.textContent = 'Quitar';
         }
+        actulizarTotal();
       });
     });
 
-    document.getElementById('btn-to-battle').addEventListener('click', () => {
+    document.getElementById('btn-to-battle').onclick = () => {
+      if (selecMercado.length === 0) {
+        alert("Debes seleccionar al menos un producto.");
+        return;
+      }
+      
       selecMercado.forEach(p => jugador.añadirItem(p));
       showScene('scene-3');
       renderJugador();
-    });
+    };
   }
+
 
   function renderJugador() {
     const estadoJugador = document.getElementById('player-current');
@@ -131,32 +146,43 @@ const enemigos = [
 
 
 
-  let index = 0;
+   let contadorBatalla =0; //este sera el contador de batallas
   function renderBatallas() {
-    if (index >= enemigos.length) {
+    if (contadorBatalla >= enemigos.length) {
       showScene('scene-6');
       renderResultado();
       return;
     }
-    const enemigo = enemigos[index];
+    const enemigo = enemigos[contadorBatalla];
     const resultado = batalla(jugador, enemigo);
-    document.getElementById('battle-output').innerHTML = `
-      <h3>Batalla ${index + 1}</h3>
+    const salidaBatalla = document.getElementById('battle-output');
+
+    salidaBatalla.innerHTML = `
+      <h3>Batalla ${contadorBatalla + 1}</h3>
       <p>${jugador.nombre} vs ${enemigo.nombre}</p>
       <p>Ganador: ${resultado.ganador}</p>
-      <p>+${resultado.puntosGanados} puntos</p>
+      <p>Puntos obtenidos: +${resultado.puntosGanados}</p>
+      <hr>
+      <h4>Registro del combate:</h4>
+      <div class="combat-log">${resultado.historialBatallas.map(mensaje => `<p>${mensaje}</p>`).join('')}</div>
     `;
-    index++;
+    contadorBatalla++;
     document.getElementById('btn-next-battle').onclick = renderBatallas;
   }
 
   // escena de resultado final 
   function renderResultado() {
     const nivel = agruparPorNivel([jugador], 250);
-    const cont = document.getElementById('final-result');
-    const esPro = nivel.pro?.length > 0;
-    cont.innerHTML = `
-      <h2>${esPro ? '🏆 Eres un PRO 🏆' : '💀 Rookie 💀'}</h2>
+    const containerResultado = document.getElementById('final-result');
+   
+    let mensajeNivel ;
+    if (nivel.pro && nivel.pro.length > 0) {
+      mensajeNivel = '🏆 Eres un VETERANO 🏆';
+    } else{
+      mensajeNivel = '💀 Novato 💀'
+    }
+    containerResultado.innerHTML = `
+      <h2>${mensajeNivel}</h2>
       <p>Puntos totales: ${jugador.puntos}</p>
     `;
     document.getElementById('btn-restart').onclick = () => location.reload();

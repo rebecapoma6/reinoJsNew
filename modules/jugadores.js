@@ -26,6 +26,8 @@ export class Jugador {
    */
   añadirItem(item) {
     this.inventario.push(structuredClone(item));
+    // Actualiza la vida máxima actual si es consumible
+    this.vida = this.vidaTotal;
   }
 
   /**
@@ -51,6 +53,14 @@ export class Jugador {
   get defensaTotal() {
     return this.inventario.reduce((total, item) => total + (item.bonus.defensa || 0), 0);
   }
+  /**
+   * calcula la vida máxima total incluyendo los bonus de los consumibles.
+   * independiente de this.vida, que es la vida actual durante la batalla.
+   */
+  get vidaTotal() {
+    return this.vidaMax + this.inventario.reduce((total, item) => total + (item.bonus.vida || 0), 0);
+  }
+
 
   /**
    * Agrupa los ítems del inventario por tipo.
@@ -72,8 +82,8 @@ export class Jugador {
       ⚔️ Ataque total: ${this.ataqueTotal}
       🛡️ Defensa total: ${this.defensaTotal}
       🎒 Inventario: ${this.inventario.length > 0
-          ? this.inventario.map(item => item.nombre).join(', ')
-          : 'Vacío'}
+        ? this.inventario.map(item => item.nombre).join(', ')
+        : 'Vacío'}
     `;
   }
 

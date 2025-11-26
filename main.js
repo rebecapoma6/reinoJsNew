@@ -3,6 +3,7 @@ import { Enemigo, JefeFinal } from './modules/enemigos.js';
 import { mercado } from './modules/mercado.js';
 import { batalla, agruparPorNivel } from './modules/ranking.js';
 import { showScene } from './utils/scene.js';
+import { groupBy } from './utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
@@ -58,6 +59,11 @@ const enemigos = [
         <button class="select-btn">Seleccionar</button>
       </div>`).join('');
 
+
+
+
+      
+
     document.querySelectorAll('.select-btn').forEach(btn => {
       btn.addEventListener('click', e => {
         const i = e.target.parentNode.dataset.index;
@@ -82,6 +88,17 @@ const enemigos = [
   function renderJugador() {
     const estadoJugador = document.getElementById('player-current');
     estadoJugador.innerHTML = jugador.mostrarJugador();
+
+    const inventarioAgrup = groupBy(jugador.inventario,item => item.tipo);
+    const containerInventario = document.createElement("div");
+    containerInventario.innerHTML = `<h3>Inventario Agrupado:</h3>`;
+    for(const tipo in inventarioAgrup){
+      containerInventario.innerHTML += `
+      <p><strong>${tipo.toUpperCase()}</strong>:${inventarioAgrup[tipo].map(i=>i.nombre).join(',')}</p>
+      `;
+    }
+
+    estadoJugador.appendChild(containerInventario);
 
     const btnEnemigos = document.getElementById('btn-to-enemies');
     btnEnemigos.onclick = () => {
@@ -110,6 +127,9 @@ const enemigos = [
       renderBatallas();
     };
   }
+
+
+
 
   let index = 0;
   function renderBatallas() {

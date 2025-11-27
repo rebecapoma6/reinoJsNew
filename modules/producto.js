@@ -10,12 +10,14 @@ export class Producto {
    * @param {string} tipo - Tipo de producto (por ejemplo: "arma", "poción", "armadura").
    * @param {Object} bonus - Objeto con los bonus del producto, por ejemplo { ataque: 5, defensa: 2 }.
    */
-  constructor(nombre, precio, rareza, tipo, bonus) {
+  constructor(nombre, precio, rareza, tipo, bonus,imagen) {
     this.nombre = nombre;
     this.precio = precio;
     this.rareza = rareza;
     this.tipo = tipo;
     this.bonus = bonus;
+    this.imagen = imagen;
+
   }
 
   /**
@@ -31,7 +33,9 @@ export class Producto {
     // Quita la última coma y espacio
     bonusTexto = bonusTexto.slice(0, -2);
 
-    return `${this.nombre} [${this.rareza}] (${this.tipo}) — ${EUR.format(this.precio)} — ${bonusTexto}`;
+    return `
+    <img src="${this.imagen}" alt="${this.nombre}" width="80">
+    ${this.nombre} [${this.rareza}] (${this.tipo}) — ${EUR.format(this.precio)} — ${bonusTexto}`;
   }
 
   /**

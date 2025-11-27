@@ -11,8 +11,9 @@ export class Jugador {
    * Crea una nueva instancia de Jugador.
    * @param {string} nombre - Nombre del jugador.
    */
-  constructor(nombre) {
+  constructor(nombre, avatar) {
     this.nombre = nombre;
+    this.avatar = avatar;
     this.puntos = 0;
     this.inventario = [];
     this.vidaMax = 100;

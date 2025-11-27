@@ -7,6 +7,19 @@ import { EUR, groupBy } from './utils/utils.js';
 
 window.addEventListener('DOMContentLoaded', () => {
 
+  let avatarSeleccionado = null;
+
+  // Selección de avatar
+  document.querySelectorAll('.selectable').forEach(img => {
+    img.addEventListener('click', (e) => {
+      // quitar selección anterior
+      document.querySelectorAll('.selectable').forEach(i => i.classList.remove('selected'));
+      // marcar este como seleccionado
+      e.target.classList.add('selected');
+      avatarSeleccionado = e.target.dataset.avatar;
+    });
+  });
+
   let jugador;
   document.getElementById('btn-create-player').addEventListener('click', () => {
     const ocultarForm = document.getElementById('ocultar');
@@ -15,20 +28,26 @@ window.addEventListener('DOMContentLoaded', () => {
       alert('Por favor, introduce tu nombre.');
       return;
     }
+    if (!avatarSeleccionado) {
+      alert('Por favor, selecciona un avatar.');
+      return;
+    }
 
-    jugador = new Jugador(nombre); // creamos una nueva instancia de la clase Jugador.
+    jugador = new Jugador(nombre, avatarSeleccionado); // creamos una nueva instancia de la clase Jugador.
 
     // aqui mostraremos los datos del jugador
     const datosJugadorDiv = document.getElementById('player-stats');
-    datosJugadorDiv.innerHTML = `
-      <p>👤 Nombre: ${jugador.nombre}</p>
+    datosJugadorDiv.innerHTML = `     
+      <img src="${jugador.avatar}" alt="Avatar" width="100">
+       <p>👤 Nombre: ${jugador.nombre}</p>
       <p>❤️ Vida: ${jugador.vida} / ${jugador.vidaMax}</p>
       <p>⚔️ Ataque: ${jugador.ataqueTotal}</p>
       <p>🛡️ Defensa: ${jugador.defensaTotal}</p>
+      <p>💯 Puntos: ${jugador.puntos}</p>
     `;
     ocultarForm.style.display = 'none';
 
-    alert(`Jugador ${jugador.nombre} creado. Presiona CONTINUAR para ir al mercado.`);
+    alert(`Jugador ${jugador.nombre} creado.`);
   });
 
   // Botón para continuar a mercado
@@ -38,14 +57,18 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
     showScene('scene-2');
+    // Mostrar footer vacío a partir del mercado
+    const footer = document.getElementById('inventory-container');
+    footer.style.display = 'flex';
+    footer.innerHTML = ''; // vacío al inicio
     renderMercado();
   });
 
 
-const enemigos = [
-    new Enemigo('Goblin', 12, 50),
-    new Enemigo('Orco', 25, 80),
-    new JefeFinal('Dragón rojo', 40, 120, 'Llama infernal', 1.8),
+  const enemigos = [
+    new Enemigo('Goblin', 12, 50,'image/Orcoh.jpg'),
+    new Enemigo('Orco', 25, 80,'image/Gobln.jpg'),
+    new JefeFinal('Dragón rojo', 40, 120, 'Llama infernal', 1.8,'image/dragon.jpg'),
   ];
 
 
@@ -53,6 +76,7 @@ const enemigos = [
   const selecMercado = [];
   function renderMercado() {
     const containerMercado = document.getElementById('market-container');
+    const footer = document.getElementById('inventory-container'); 
     containerMercado.innerHTML = mercado.map((p, i) => `
       <div class="producto" data-index="${i}">
         <p>${p.mostrarProducto()}</p>
@@ -60,15 +84,15 @@ const enemigos = [
       </div>`).join('');
 
 
-const containerTotal = document.createElement("div");
-containerTotal.id = "market-total";
-containerTotal.innerHTML = `<h3>Total: 0 €</h3>`;
-containerMercado.appendChild(containerTotal);
+    const containerTotal = document.createElement("div");
+    containerTotal.id = "market-total";
+    containerTotal.innerHTML = `<h3>Total: 0 €</h3>`;
+    containerMercado.appendChild(containerTotal);
 
-function actulizarTotal() {
-  const total = selecMercado.reduce((acc, item) => acc + item.precio,0);
-  containerTotal.innerHTML = `<h3>Total: ${EUR.format(total)}</h3>`;
-}
+    function actulizarTotal() {
+      const total = selecMercado.reduce((acc, item) => acc + item.precio, 0);
+      containerTotal.innerHTML = `<h3>Total: ${EUR.format(total)}</h3>`;
+    }
 
 
 
@@ -84,6 +108,16 @@ function actulizarTotal() {
           e.target.textContent = 'Quitar';
         }
         actulizarTotal();
+        // Actualizar footer
+        footer.style.display = 'flex';
+        footer.innerHTML = '';
+        selecMercado.forEach(p => {
+          const div = document.createElement('div');
+          div.classList.add('item', 'added');
+          setTimeout(() => div.classList.remove('added'), 500);
+          div.innerHTML = `<img src="${p.imagen}" alt="${p.nombre}">`;
+          footer.appendChild(div);
+        });
       });
     });
 
@@ -92,7 +126,7 @@ function actulizarTotal() {
         alert("Debes seleccionar al menos un producto.");
         return;
       }
-      
+
       selecMercado.forEach(p => jugador.añadirItem(p));
       showScene('scene-3');
       renderJugador();
@@ -104,12 +138,12 @@ function actulizarTotal() {
     const estadoJugador = document.getElementById('player-current');
     estadoJugador.innerHTML = jugador.mostrarJugador();
 
-    const inventarioAgrup = groupBy(jugador.inventario,item => item.tipo);
+    const inventarioAgrup = groupBy(jugador.inventario, item => item.tipo);
     const containerInventario = document.createElement("div");
     containerInventario.innerHTML = `<h3>Inventario Agrupado:</h3>`;
-    for(const tipo in inventarioAgrup){
+    for (const tipo in inventarioAgrup) {
       containerInventario.innerHTML += `
-      <p><strong>${tipo.toUpperCase()}</strong>:${inventarioAgrup[tipo].map(i=>i.nombre).join(',')}</p>
+      <p><strong>${tipo.toUpperCase()}</strong>:${inventarioAgrup[tipo].map(i => i.nombre).join(',')}</p>
       `;
     }
 
@@ -122,17 +156,18 @@ function actulizarTotal() {
     };
   }
 
-  
+
   function renderEnemigos() {
     const containerEnemigo = document.getElementById('enemies-container');
     containerEnemigo.innerHTML = enemigos
-      .map(enemigoBatlla => `
+      .map(enemigo => `
         <div class="enemy-card">
-          <h3>${enemigoBatlla.nombre}</h3>
-          <p>Tipo: ${enemigoBatlla.tipo}</p>
-          <p>ATQ: ${enemigoBatlla.ataque}</p>
-          <p>HP: ${enemigoBatlla.vida}</p>
-          ${enemigoBatlla.tipo === 'jefe' ? `<p>🔥 Habilidad: ${enemigoBatlla.habilidadEspecial}</p>` : ''}
+         <img src="${enemigo.imagen}" alt="${enemigo.nombre}">
+          <h3>${enemigo.nombre}</h3>
+          <p>Tipo: ${enemigo.tipo}</p>
+          <p>ATQ: ${enemigo.ataque}</p>
+          <p>HP: ${enemigo.vida}</p>
+          ${enemigo.tipo === 'jefe' ? `<p>🔥 Habilidad: ${enemigo.habilidadEspecial}</p>` : ''}
         </div>`
       )
       .join('');
@@ -146,7 +181,7 @@ function actulizarTotal() {
 
 
 
-   let contadorBatalla =0; //este sera el contador de batallas
+  let contadorBatalla = 0; //este sera el contador de batallas
   function renderBatallas() {
     if (contadorBatalla >= enemigos.length) {
       showScene('scene-6');
@@ -174,11 +209,11 @@ function actulizarTotal() {
   function renderResultado() {
     const nivel = agruparPorNivel([jugador], 250);
     const containerResultado = document.getElementById('final-result');
-   
-    let mensajeNivel ;
+
+    let mensajeNivel;
     if (nivel.pro && nivel.pro.length > 0) {
       mensajeNivel = '🏆 Eres un VETERANO 🏆';
-    } else{
+    } else {
       mensajeNivel = '💀 Novato 💀'
     }
     containerResultado.innerHTML = `
@@ -187,5 +222,5 @@ function actulizarTotal() {
     `;
     document.getElementById('btn-restart').onclick = () => location.reload();
   }
- 
+
 });

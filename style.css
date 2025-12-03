@@ -134,6 +134,40 @@ button:hover {
   object-fit: contain;
 }
 
+
+/* ==================== VISUAL DE BATALLA ==================== */
+
+#battle-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 20px;
+}
+
+.battle-player, .battle-enemy {
+  text-align: center;
+}
+
+#battle-visual img {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid var(--primary-color);
+}
+
+.battle-vs {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--danger-color);
+}
+
+
+
+
+
+
 /* ===================== CUADRÍCULAS ===================== */
 #market-container, #enemies-container {
   /* display: grid;

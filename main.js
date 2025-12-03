@@ -192,14 +192,17 @@ window.addEventListener('DOMContentLoaded', () => {
     const resultado = batalla(jugador, enemigo);
     const salidaBatalla = document.getElementById('battle-output');
 
+document.getElementById("battle-player-img").src = jugador.avatar;
+document.getElementById("battle-player-name").textContent = jugador.nombre;
+document.getElementById("battle-enemy-img").src = enemigo.imagen;
+document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
+
+
     salidaBatalla.innerHTML = `
       <h3>Batalla ${contadorBatalla + 1}</h3>
-      <p>${jugador.nombre} vs ${enemigo.nombre}</p>
+      
       <p>Ganador: ${resultado.ganador}</p>
-      <p>Puntos obtenidos: +${resultado.puntosGanados}</p>
-      <hr>
-      <h4>Registro del combate:</h4>
-      <div class="combat-log">${resultado.historialBatallas.map(mensaje => `<p>${mensaje}</p>`).join('')}</div>
+      <p>Puntos obtenidos: +${resultado.puntosGanados}</p>      
     `;
     contadorBatalla++;
     document.getElementById('btn-next-battle').onclick = renderBatallas;

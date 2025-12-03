@@ -13,20 +13,41 @@ export const mercado = [
   new Producto('Elixir legendario', 520, 'épico', 'consumible', { vida: 150 },'image/posionLegendario.jpg'),
 ];
 
+/**
+ * Filtra los productos del mercado por el nivel de rareza especificado.
+ * @param {string}  rareza - La rareza por la que se desea filtrar ("común", "raro", "épico", etc.). 
+ * @returns {Array<Producto>} Un nuevo array con los productos que coinciden con la rareza.
+ */
 export function filtrarPorRareza(rareza) {
   return mercado.filter(producto => producto.rareza === rareza);
 }
 
+/**
+ * 
+ * @param {string} rareza - La rareza de los productos a los que se aplicará el descuento.
+ * @param {number} porcentaje  - El porcentaje de descuento (0-100).
+ * @returns {Array<Producto>} Un nuevo array con los productos actualizados (o clonados si no aplican descuento).
+ */
 export function aplicarDescuentoPorRareza(rareza, porcentaje) {
   return mercado.map(producto =>
     producto.rareza === rareza ? producto.aplicarDescuento(porcentaje) : producto
   );
 }
 
+/**
+ * Busca un producto en el listado del mercado por su nombre, ignorando mayúsculas y minúsculas.
+ * @param {string} nombre - El nombre del producto a buscar. 
+ * @returns  {Producto | null} El objeto Producto si se encuentra, o null si no existe.
+ */
 export function buscarProducto(nombre) {
   return mercado.find(producto => producto.nombre.toLowerCase() === nombre.toLowerCase()) || null;
 }
 
+/**
+ * Devuelve la representación en HTML o texto de un producto utilizando su método interno.
+ * @param {Producto} producto - La instancia del producto a describir.
+ * @returns {string} La descripción formateada del producto.
+ */
 export function describirProducto(producto) {
   return producto.mostrarProducto();
 }

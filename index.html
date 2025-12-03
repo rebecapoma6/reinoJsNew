@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="module" src="./main.js" defer></script>
   <link rel='stylesheet' type='text/css' href='style.css'>
-  <title>Reino JS</title>
+  <title>ReinoJs</title>
 </head>
 
 <body>
@@ -19,6 +19,11 @@
       <div id="ocultar">
         <label for="player-name-input">Introduce tu nombre:</label>
         <input type="text" id="player-name-input" placeholder="Tu nombre..." />
+        <p>Selecciona un avatar:</p>
+        <div id="avatar-selection">
+          <img src="image/hombre.jpg" alt="Avatar Hombre" class="avatar selectable" data-avatar="image/hombre.jpg">
+          <img src="image/mujer.png" alt="Avatar Mujer" class="avatar selectable" data-avatar="image/mujer.png">
+        </div>
         <button id="btn-create-player">Crear jugador</button>
       </div>
       <div id="player-stats"></div>
@@ -37,6 +42,7 @@
     <!-- Escena 3: Estado del jugador -->
     <div id="scene-3" class="scene">
       <h2>🧭 Estado del jugador</h2>
+      <br>
       <div id="player-current"></div>
       <button id="btn-to-enemies">Ver enemigos 👹</button>
     </div>
@@ -51,6 +57,20 @@
     <!-- Escena 5: Batallas -->
     <div id="scene-5" class="scene">
       <h2>⚔️ Batallas en curso</h2>
+      <div id="battle-visual">
+        <div class="battle-player">
+          <img id="battle-player-img" class="player-img" src="" alt="Jugador">
+          <p id="battle-player-name"></p>
+        </div>
+
+        <div class="battle-vs">VS</div>
+
+        <div class="battle-enemy">
+          <img id="battle-enemy-img" class="enemy-img" src="" alt="Enemigo">
+          <p id="battle-enemy-name"></p>
+        </div>
+      </div>
+
       <div id="battle-output"></div>
       <button id="btn-next-battle">Siguiente batalla ➡️</button>
     </div>
@@ -65,28 +85,11 @@
 
 
 
-  <!-- <footer>
-        <div id="inventory-container">
-            <div class="item">
-                <img src="image/img1.png" alt="">
-            </div>
-            <div class="item">
-                <img src="" alt="">
-            </div>
-            <div class="item">
-                <img src="" alt="">
-            </div>
-            <div class="item">
-                <img src="" alt="">
-            </div>
-            <div class="item">
-                <img src="" alt="">
-            </div>
-            <div class="item">
-                <img src="" alt="">
-            </div>
-        </div>
-    </footer> -->
+  <footer>
+    <div id="inventory-container">
+
+    </div>
+  </footer>
 </body>
 
 </html>

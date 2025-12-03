@@ -1,152 +1,324 @@
-.scene { display: none; }
-.scene.active { display: block; }
-
-
-*{
+/* ===================== RESET ===================== */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+:root {
+  --primary-color: rgb(94, 64, 15);
+  --secondary-color: rgb(218, 186, 134);
+  --accent-color: rgb(194, 210, 73);
+  --danger-color: rgb(208, 64, 38);
+  --bg-color: #fef6e4;
+  --card-color: #ffffff;
+}
 
+/* ===================== BODY & LAYOUT ===================== */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.5;
-  padding: 30px 20px;
-  max-width: 700px;
-  margin: 0 auto;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--bg-color);
 }
 
-/* Encabezado */
-header {
-  text-align: center;
-  margin-bottom: 2rem;
+main {
+  margin: 32px;
 }
 
-#title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #222;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  user-select: none;
-}
-
-/* Escenas */
+/* ===================== ESCENAS ===================== */
 .scene {
   display: none;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  margin-bottom: 2rem;
+  background-color: var(--card-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .scene.active {
   display: block;
 }
 
-/* Botones */
+/* ===================== HEADER & FOOTER ===================== */
+header, footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+}
+
+#title {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+/* ===================== BOTONES ===================== */
 button {
-  background-color: #2c3e50;
-  color: #ecf0f1;
+  background-color: var(--accent-color);
   border: none;
-  padding: 0.7rem 1.3rem;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
-  user-select: none;
+  font-weight: bold;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 button:hover {
-  background-color: #34495e;
+  transform: scale(1.05);
+  background-color: var(--secondary-color);
 }
 
-button:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
+/* ===================== AVATAR ===================== */
+#player-stats img {
+  border-radius: 12px;
+  object-fit: contain;
+  border: 2px solid var(--primary-color);
 }
 
-/* Inputs */
-input[type="text"] {
-  width: 100%;
-  max-width: 300px;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  margin-top: 0.3rem;
+
+#avatar-selection {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
 }
 
-/* Textos y etiquetas */
-label {
-  font-weight: 600;
-  color: #555;
+.avatar {
+  width: 150px;
+  height: 200px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+  border-color: var(--accent-color);
+}
+
+.avatar.selected {
+  border-color: var(--primary-color);
+}
+
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra todo horizontalmente */
+  gap: 10px; /* separación entre elementos */
+  background-color: var(--card-color);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 300px; /* ancho máximo */
+  margin: 0 auto; /* centra el contenedor en su sección */
+}
+
+.player-card .avatar {
+  width: 280px;
+  height: 280px;
+
+  object-fit: contain;
+  
+}
+
+
+
+
+/* ===================== INVENTARIO ===================== */
+#inventory-container {
+  background-color: var(--primary-color);
+  display: flex;
+  flex-wrap: wrap;
+  margin: 8px auto;
+  padding: 8px;
+  gap: 8px;
+  justify-content: center;
+   display: none;
+}
+
+.item {
+  background-color: var(--secondary-color);
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.item img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+
+/* ==================== VISUAL DE BATALLA ==================== */
+
+#battle-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 20px;
+
+}
+
+.battle-player, .battle-enemy {
+  text-align: center;
+
+}
+
+#battle-visual img {
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  
+ 
+}
+
+.battle-vs {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--danger-color);
+}
+
+/* ===================== CUADRÍCULAS ===================== */
+#market-container, #enemies-container {
+   display: grid;
+   grid-template-columns: repeat(5, minmax(140px, 1fr)); /* máximo 5 columnas */
+   grid-auto-rows: auto;
+   gap: 16px;
+   justify-items: center;
+}
+
+
+
+.producto, .enemy-card {
+  background-color: var(--card-color);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.producto {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.enemy-card {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.enemy-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin: 0 auto;
   display: block;
-  margin-bottom: 0.2rem;
 }
 
-#player-stats p,
-#market-container div,
-#enemies-container div {
-  margin-bottom: 0.8rem;
+
+.producto img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin: 0 auto;
 }
 
-/* Contenedores de productos y enemigos */
-#market-container .producto,
-#enemies-container .enemy-card {
-  border: 1px solid #ddd;
-  padding: 10px 15px;
-  border-radius: 6px;
-  background: #fafafa;
-  margin-bottom: 1rem;
-  user-select: none;
+
+.producto:hover, .enemy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
 }
 
-/* Encabezados escenas (h2) */
-main h2 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 1rem;
+/* ===================== ANIMACIÓN PRODUCTO AÑADIDO ===================== */
+.producto.added {
+  animation: flash 0.5s ease forwards;
+  background-color: var(--accent-color);
 }
 
-/* Espaciado botones en línea */
-#scene-1 button {
-  margin-right: 15px;
+@keyframes flash {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-/* Scroll si mercado o enemigos crecen mucho */
-#market-container,
-#enemies-container,
-#battle-output,
-#player-current,
-#final-result {
-  max-height: 300px;
-  overflow-y: auto;
+/* ===================== ANIMACIÓN BATALLA ===================== */
+.player-img, .enemy-img {
+  position: relative;
+  transition: transform 0.7s ease;
 }
 
-/* Scroll barra suave */
-#market-container::-webkit-scrollbar,
-#enemies-container::-webkit-scrollbar,
-#battle-output::-webkit-scrollbar,
-#player-current::-webkit-scrollbar,
-#final-result::-webkit-scrollbar {
-  width: 8px;
+.scene-5 .player-img {
+  transform: translateX(-100%);
 }
 
-#market-container::-webkit-scrollbar-thumb,
-#enemies-container::-webkit-scrollbar-thumb,
-#battle-output::-webkit-scrollbar-thumb,
-#player-current::-webkit-scrollbar-thumb,
-#final-result::-webkit-scrollbar-thumb {
-  background-color: #bdc3c7;
-  border-radius: 4px;
+.scene-5.active .player-img {
+  transform: translateX(0);
+}
+
+.scene-5 .enemy-img {
+  transform: translateX(100%);
+}
+
+.scene-5.active .enemy-img {
+  transform: translateX(0);
+}
+
+/* ===================== ESTADO JUGADOR ===================== */
+#player-current {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#player-current p {
+  font-size: 1.1rem;
+}
+
+/* ===================== RESULTADO FINAL ===================== */
+#final-result h2 {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 16px;
+}
+
+#final-result p {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 640px) {
+  #inventory-container {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  #market-container, #enemies-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
 }
 
 /* Responsividad básica */
@@ -161,68 +333,10 @@ main h2 {
   }
 }
 
-
-
-
-/* :root{
-  --primary-color: rgb(94, 64, 15);
-  --secondary-color: rgb(218, 186, 134);
-  --accent-color: rgb(194, 210, 73);
-  --danger-color: rgb(208, 64, 38);
-}
-
-body{
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-main{
-  margin: 64px;
-}
-
-main>div{
-  height: 100%;
-  background-color: blue;
-}
-
-#scene-1{
-  display: flex;
-  justify-content: center;
-}
-
-#scene-1-container:first-child{
-  height: 40%;
-  background-color: orange;
-}
-
-footer, header{
-  display: flex;
-  justify-content: center;
-}
-
-#inventory-container{
-  background-color: var(--primary-color);
-  display: flex;
-  margin: 8px 20%;
-  padding: 8px;
-  gap: 4px;
-}
-
-.item{
-  background-color: var(--secondary-color);
-  /* aspect-ratio: 1 / 1; */
-  /* border: 1px solid black;
-  width: 100px;
-}
-
-.item img{
-  width: 100%;
-}
-
-@media (width < 640px) {
-  #inventory-container{
-    grid-template-columns: repeat(3, 1fr);
+@media (max-width: 600px) {
+  #market-container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
- */ 
+
+

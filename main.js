@@ -243,6 +243,14 @@ document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
     let mensajeNivel;
     if (nivel.pro && nivel.pro.length > 0) {
       mensajeNivel = '🏆 Eres un VETERANO 🏆';
+      if (typeof confetti === 'function') {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+      }
+
     } else {
       mensajeNivel = '💀 Novato 💀'
     }

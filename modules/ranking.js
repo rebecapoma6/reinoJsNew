@@ -27,21 +27,23 @@
       historialBatallas.push(`--- Turno ${turno} --- `);
 
       vidaEnemigo -= jugador.ataqueTotal;
-      if (vidaEnemigo < 0) {
-        vidaEnemigo = 0;
-      }
-      historialBatallas.push(`${jugador.nombre} hace ${jugador.ataqueTotal} de daño. Vida del enemigo : ${vidaEnemigo}`);
+        if (vidaEnemigo < 0) vidaEnemigo = 0;
+        historialBatallas.push(`${jugador.nombre} hace ${jugador.ataqueTotal} de daño. Vida del enemigo: ${vidaEnemigo}`);
 
-      if (vidaEnemigo <= 0) {
-        break;
-      }
+        if (vidaEnemigo <= 0) break;
 
-      vidaJugador -= enemigo.ataque;
-      if (vidaJugador < 0) {
-        vidaJugador = 0;
-      }
-      historialBatallas.push(`${enemigo.nombre} hace ${enemigo.ataque} de daño. Vida del jugador : ${vidaJugador}`);
-      turno++;
+        // Ataca el enemigo -> Aquí va tu adaptación
+        let dañoBaseEnemigo = enemigo.ataque;
+        let defensaJugador = jugador.defensaTotal;
+        let danioNetoRecibido = dañoBaseEnemigo - defensaJugador;
+        if (danioNetoRecibido < 0) danioNetoRecibido = 0;
+
+        vidaJugador -= danioNetoRecibido;
+        if (vidaJugador < 0) vidaJugador = 0;
+
+        historialBatallas.push(`${enemigo.nombre} hace ${danioNetoRecibido} de daño. Vida del jugador: ${vidaJugador}`);
+
+        turno++;
     }
 
     let ganador;
@@ -54,11 +56,10 @@
 
     let puntosGanados = 0;
     if (ganador === jugador.nombre) {
-      puntosGanados = 100 + enemigo.ataque;
-
-      if (enemigo.tipo === "jefe") {
-        puntosGanados = puntosGanados * enemigo.multiplicador;
-      }
+        puntosGanados = 100 + enemigo.ataque;
+        if (enemigo.tipo === "jefe") {
+            puntosGanados *= enemigo.multiplicador;
+        }
     }
     // Sumar los puntos al jugador
     jugador.puntos += puntosGanados;

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/ranking.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/ranking.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>  import { groupBy } from '../utils/utils.js';
+
+  /**
+   * Módulo de Ranking y Batalla
+   * ----------------------------
+   * Gestiona el sistema de combate entre jugadores y enemigos,
+   * agrupa jugadores según su nivel y muestra el ranking final.
+   */
+
+  /**
+   * Simula una batalla entre un jugador y un enemigo.
+   * Si el jugador gana, obtiene puntos según la fuerza del enemigo.
+   * @param {Jugador} jugador - Jugador participante.
+   * @param {Enemigo} enemigo - Enemigo a combatir.
+   * @returns {Object} Resultado con el nombre del ganador y los puntos ganados.
+   */
+  export function batalla(jugador, enemigo) {
+    let historialBatallas = [];
+    let turno = 1;
+    // Copiamos las vidas actuales (sin modificarlas directamente)
+    let vidaJugador = jugador.vida;
+    let vidaEnemigo = enemigo.vida;
+
+    historialBatallas.push(`Comienza la batalla contra ${enemigo.nombre}`);
+
+    while (vidaJugador > 0 &amp;&amp; vidaEnemigo > 0) {
+      historialBatallas.push(`--- Turno ${turno} --- `);
+
+      vidaEnemigo -= jugador.ataqueTotal;
+        if (vidaEnemigo &lt; 0) vidaEnemigo = 0;
+        historialBatallas.push(`${jugador.nombre} hace ${jugador.ataqueTotal} de daño. Vida del enemigo: ${vidaEnemigo}`);
+
+        if (vidaEnemigo &lt;= 0) break;
+
+        // Ataca el enemigo -> Aquí va tu adaptación
+        let dañoBaseEnemigo = enemigo.ataque;
+        let defensaJugador = jugador.defensaTotal;
+        let danioNetoRecibido = dañoBaseEnemigo - defensaJugador;
+        if (danioNetoRecibido &lt; 0) danioNetoRecibido = 0;
+
+        vidaJugador -= danioNetoRecibido;
+        if (vidaJugador &lt; 0) vidaJugador = 0;
+
+        historialBatallas.push(`${enemigo.nombre} hace ${danioNetoRecibido} de daño. Vida del jugador: ${vidaJugador}`);
+
+        turno++;
+    }
+
+    let ganador;
+    if (vidaJugador > 0) {
+      ganador = jugador.nombre;
+    } else {
+      ganador = enemigo.nombre;
+    }
+
+
+    let puntosGanados = 0;
+    if (ganador === jugador.nombre) {
+        puntosGanados = 100 + enemigo.ataque;
+        if (enemigo.tipo === "jefe") {
+            puntosGanados *= enemigo.multiplicador;
+        }
+    }
+    // Sumar los puntos al jugador
+    jugador.puntos += puntosGanados;
+
+    return {
+      historialBatallas: historialBatallas,
+      ganador: ganador,
+      puntosGanados: puntosGanados
+    };
+
+  }
+
+
+  /**
+  * Agrupa jugadores según su puntuación:
+  * - "pro" si superan el umbral.
+  * - "rookie" si no lo alcanzan.
+  *
+  * @param {Array&lt;Jugador>} jugadores - Lista de jugadores.
+  * @param {number} [umbral=300] - Puntos mínimos para ser "pro", por defecto 300.
+  * @returns {Object} Jugadores agrupados por nivel.
+  */
+  export function agruparPorNivel(jugadores, umbral = 300) {
+    return groupBy(jugadores, jugador => (jugador.puntos >= umbral ? 'pro' : 'rookie'));
+  }
+
+  /**
+   * Muestra el ranking final de jugadores en consola,
+   * ordenados por puntuación de mayor a menor.
+   * @param {Array&lt;Jugador>} jugadores - Lista de jugadores.
+   */
+  export function mostrarRanking(jugadores) {
+    // Ordena de mayor a menor puntuación
+    const ordenados = jugadores.slice().sort((a, b) => b.puntos - a.puntos);
+
+    console.log('🏆 RANKING FINAL 🏆');
+    for (const jugador of ordenados) {
+      console.log(jugador.mostrarJugador());
+    }
+  }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Enemigo_Enemigo.html">Enemigo</a></li><li><a href="JefeFinal_JefeFinal.html">JefeFinal</a></li><li><a href="Jugador_Jugador.html">Jugador</a></li><li><a href="Producto_Producto.html">Producto</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EUR">EUR</a></li><li><a href="global.html#agruparPorNivel">agruparPorNivel</a></li><li><a href="global.html#aplicarDescuentoPorRareza">aplicarDescuentoPorRareza</a></li><li><a href="global.html#batalla">batalla</a></li><li><a href="global.html#buscarProducto">buscarProducto</a></li><li><a href="global.html#describirProducto">describirProducto</a></li><li><a href="global.html#filtrarPorRareza">filtrarPorRareza</a></li><li><a href="global.html#groupBy">groupBy</a></li><li><a href="global.html#mostrarRanking">mostrarRanking</a></li><li><a href="global.html#obtenerRarezasUnicas">obtenerRarezasUnicas</a></li><li><a href="global.html#showScene">showScene</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 22:38:10 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -30,3 +30,13 @@ export function buscarProducto(nombre) {
 export function describirProducto(producto) {
   return producto.mostrarProducto();
 }
+
+/**
+ * Devuelve una lista de todas las rarezas únicas presentes en el mercado.
+ * @returns {Array<string>} Lista de rarezas únicas ej: ["común", "raro", "épico"].
+ */
+
+export function obtenerRarezasUnicas() {
+    const conjuntoRarezas = new Set(mercado.map(producto => producto.rareza));
+    return Array.from(conjuntoRarezas);
+}

@@ -1,10 +1,11 @@
 import { Jugador } from './modules/jugadores.js';
 import { Enemigo, JefeFinal } from './modules/enemigos.js';
-import { mercado } from './modules/mercado.js';
+import { mercado ,aplicarDescuentoPorRareza,obtenerRarezasUnicas } from './modules/mercado.js';
 import { batalla, agruparPorNivel } from './modules/ranking.js';
 import { showScene } from './utils/scene.js';
 import { EUR, groupBy } from './utils/utils.js';
 
+let mercadoActual;
 window.addEventListener('DOMContentLoaded', () => {
 
   let avatarSeleccionado = null;
@@ -38,8 +39,8 @@ window.addEventListener('DOMContentLoaded', () => {
     // aqui mostraremos los datos del jugador
     const datosJugadorDiv = document.getElementById('player-stats');
     datosJugadorDiv.innerHTML = `     
-      <img src="${jugador.avatar}" alt="Avatar" width="100">
-       <p>👤 Nombre: ${jugador.nombre}</p>
+      <img src="${jugador.avatar}" alt="Avatar" width="180">
+      <p>👤 Nombre: ${jugador.nombre}</p>
       <p>❤️ Vida: ${jugador.vida} / ${jugador.vidaMax}</p>
       <p>⚔️ Ataque: ${jugador.ataqueTotal}</p>
       <p>🛡️ Defensa: ${jugador.defensaTotal}</p>
@@ -56,6 +57,24 @@ window.addEventListener('DOMContentLoaded', () => {
       alert('Primero crea tu jugador.'); //si en caso no crea a jugador y da un button continuar le saldra la alert
       return;
     }
+
+    mercadoActual = mercado;
+    const todasLasRarezas = obtenerRarezasUnicas();
+
+    if (todasLasRarezas.length > 0) {
+        //Selecciona rareza aleatoria
+        const indiceRareza = Math.floor(Math.random() * todasLasRarezas.length);
+        const rarezaConDescuento = todasLasRarezas[indiceRareza];
+
+        // Definimos porcentaje de descuento aleatorio 
+        const porcentajeMinimo = 10;
+        const porcentajeMaximo = 35;
+        const porcentajeDescuento = Math.floor(Math.random() * (porcentajeMaximo - porcentajeMinimo + 1)) + porcentajeMinimo;
+      
+        mercadoActual = aplicarDescuentoPorRareza(rarezaConDescuento, porcentajeDescuento); 
+        
+    }
+    
     showScene('scene-2');
     // Mostrar footer vacío a partir del mercado
     const footer = document.getElementById('inventory-container');
@@ -77,9 +96,9 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderMercado() {
     const containerMercado = document.getElementById('market-container');
     const footer = document.getElementById('inventory-container'); 
-    containerMercado.innerHTML = mercado.map((p, i) => `
+    containerMercado.innerHTML = mercadoActual.map((p, i) => `
       <div class="producto" data-index="${i}">
-        <p>${p.mostrarProducto()}</p>
+      ${p.mostrarProducto()}
         <button class="select-btn">Seleccionar</button>
       </div>`).join('');
 
@@ -99,7 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.select-btn').forEach(btn => {
       btn.addEventListener('click', e => {
         const i = e.target.parentNode.dataset.index;
-        const producto = mercado[i];
+        const producto = mercadoActual[i];
         if (selecMercado.includes(producto)) {
           selecMercado.splice(selecMercado.indexOf(producto), 1);
           e.target.textContent = 'Seleccionar';
@@ -136,7 +155,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   function renderJugador() {
     const estadoJugador = document.getElementById('player-current');
-    estadoJugador.innerHTML = jugador.mostrarJugador();
+    estadoJugador.innerHTML = `
+        <img src="${jugador.avatar}" alt="Avatar del Jugador" width="180">
+        <h2>${jugador.nombre}</h2>
+        <p>❤️ Vida: ${jugador.vida}/${jugador.vidaTotal}</p>
+        <p>⚔️ Ataque total: ${jugador.ataqueTotal}</p>
+        <p>🛡️ Defensa total: ${jugador.defensaTotal}</p>
+        <p>⭐ Puntos: ${jugador.puntos}</p>
+        
+        `;
 
     const inventarioAgrup = groupBy(jugador.inventario, item => item.tipo);
     const containerInventario = document.createElement("div");
@@ -164,7 +191,6 @@ window.addEventListener('DOMContentLoaded', () => {
         <div class="enemy-card">
          <img src="${enemigo.imagen}" alt="${enemigo.nombre}">
           <h3>${enemigo.nombre}</h3>
-          <p>Tipo: ${enemigo.tipo}</p>
           <p>ATQ: ${enemigo.ataque}</p>
           <p>HP: ${enemigo.vida}</p>
           ${enemigo.tipo === 'jefe' ? `<p>🔥 Habilidad: ${enemigo.habilidadEspecial}</p>` : ''}

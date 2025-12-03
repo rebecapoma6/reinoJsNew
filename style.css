@@ -72,6 +72,12 @@ button:hover {
 }
 
 /* ===================== AVATAR ===================== */
+#player-stats img {
+  border-radius: 12px;
+  object-fit: contain;
+  border: 2px solid var(--primary-color);
+}
+
 
 #avatar-selection {
   display: flex;
@@ -80,8 +86,8 @@ button:hover {
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 150px;
+  height: 200px;
   border: 2px solid transparent;
   border-radius: 8px;
   cursor: pointer;
@@ -96,6 +102,30 @@ button:hover {
 .avatar.selected {
   border-color: var(--primary-color);
 }
+
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra todo horizontalmente */
+  gap: 10px; /* separación entre elementos */
+  background-color: var(--card-color);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  max-width: 300px; /* ancho máximo */
+  margin: 0 auto; /* centra el contenedor en su sección */
+}
+
+.player-card .avatar {
+  width: 280px;
+  height: 280px;
+
+  object-fit: contain;
+  
+}
+
+
 
 
 /* ===================== INVENTARIO ===================== */
@@ -143,18 +173,20 @@ button:hover {
   align-items: center;
   gap: 32px;
   margin-bottom: 20px;
+
 }
 
 .battle-player, .battle-enemy {
   text-align: center;
+
 }
 
 #battle-visual img {
-  width: 240px;
-  height: 240px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 3px solid var(--primary-color);
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  
+ 
 }
 
 .battle-vs {
@@ -163,22 +195,16 @@ button:hover {
   color: var(--danger-color);
 }
 
-
-
-
-
-
 /* ===================== CUADRÍCULAS ===================== */
 #market-container, #enemies-container {
-  /* display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px; */
    display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 5 columnas */
-  grid-auto-rows: auto; /* altura automática */
-  gap: 16px;
-  justify-items: center; /* centra cada card */
+   grid-template-columns: repeat(5, minmax(140px, 1fr)); /* máximo 5 columnas */
+   grid-auto-rows: auto;
+   gap: 16px;
+   justify-items: center;
 }
+
+
 
 .producto, .enemy-card {
   background-color: var(--card-color);
@@ -314,68 +340,3 @@ button:hover {
 }
 
 
-
-
-
-/* :root{
-  --primary-color: rgb(94, 64, 15);
-  --secondary-color: rgb(218, 186, 134);
-  --accent-color: rgb(194, 210, 73);
-  --danger-color: rgb(208, 64, 38);
-}
-
-body{
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-main{
-  margin: 64px;
-}
-
-main>div{
-  height: 100%;
-  background-color: blue;
-}
-
-#scene-1{
-  display: flex;
-  justify-content: center;
-}
-
-#scene-1-container:first-child{
-  height: 40%;
-  background-color: orange;
-}
-
-footer, header{
-  display: flex;
-  justify-content: center;
-}
-
-#inventory-container{
-  background-color: var(--primary-color);
-  display: flex;
-  margin: 8px 20%;
-  padding: 8px;
-  gap: 4px;
-}
-
-.item{
-  background-color: var(--secondary-color);
-  /* aspect-ratio: 1 / 1; */
-  /* border: 1px solid black;
-  width: 100px;
-}
-
-.item img{
-  width: 100%;
-}
-
-@media (width < 640px) {
-  #inventory-container{
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
- */ 

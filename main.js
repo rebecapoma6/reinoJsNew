@@ -156,13 +156,14 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderJugador() {
     const estadoJugador = document.getElementById('player-current');
     estadoJugador.innerHTML = `
-        <img src="${jugador.avatar}" alt="Avatar del Jugador" width="180">
+        <div class="player-card">
+        <img src="${jugador.avatar}" alt="Avatar del Jugador" class="avatar">
         <h2>${jugador.nombre}</h2>
         <p>❤️ Vida: ${jugador.vida}/${jugador.vidaTotal}</p>
         <p>⚔️ Ataque total: ${jugador.ataqueTotal}</p>
         <p>🛡️ Defensa total: ${jugador.defensaTotal}</p>
         <p>⭐ Puntos: ${jugador.puntos}</p>
-        
+         </div>
         `;
 
     const inventarioAgrup = groupBy(jugador.inventario, item => item.tipo);

@@ -227,9 +227,11 @@ document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
 
     salidaBatalla.innerHTML = `
       <h3>Batalla ${contadorBatalla + 1}</h3>
-      
-      <p>Ganador: ${resultado.ganador}</p>
-      <p>Puntos obtenidos: +${resultado.puntosGanados}</p>      
+      <hr>
+      <h4>Registro del combate:</h4>
+      <div class="combat-log">${resultado.historialBatallas.map(mensaje => `<p>${mensaje}</p>`).join('')}</div>   
+      <p>Ganador:<strong> ${resultado.ganador}</strong></p>
+      <p>Puntos obtenidos:<strong> +${resultado.puntosGanados}</strong></p>      
     `;
     contadorBatalla++;
     document.getElementById('btn-next-battle').onclick = renderBatallas;

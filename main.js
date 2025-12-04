@@ -1,11 +1,14 @@
 import { Jugador } from './modules/jugadores.js';
 import { Enemigo, JefeFinal } from './modules/enemigos.js';
-import { mercado ,aplicarDescuentoPorRareza,obtenerRarezasUnicas } from './modules/mercado.js';
+import { mercado, aplicarDescuentoPorRareza, obtenerRarezasUnicas } from './modules/mercado.js';
 import { batalla, agruparPorNivel } from './modules/ranking.js';
 import { showScene } from './utils/scene.js';
 import { EUR, groupBy } from './utils/utils.js';
 
 let mercadoActual;
+
+
+
 window.addEventListener('DOMContentLoaded', () => {
 
   let avatarSeleccionado = null;
@@ -35,7 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     jugador = new Jugador(nombre, avatarSeleccionado); // creamos una nueva instancia de la clase Jugador.
-
+    jugador.dinero = 500;
     // aqui mostraremos los datos del jugador
     const datosJugadorDiv = document.getElementById('player-stats');
     datosJugadorDiv.innerHTML = `     
@@ -45,6 +48,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <p>⚔️ Ataque: ${jugador.ataqueTotal}</p>
       <p>🛡️ Defensa: ${jugador.defensaTotal}</p>
       <p>💯 Puntos: ${jugador.puntos}</p>
+      <p>💰 Dinero: ${jugador.dinero} €</p>
     `;
     ocultarForm.style.display = 'none';
 
@@ -62,20 +66,24 @@ window.addEventListener('DOMContentLoaded', () => {
     const todasLasRarezas = obtenerRarezasUnicas();
 
     if (todasLasRarezas.length > 0) {
-        //Selecciona rareza aleatoria
-        const indiceRareza = Math.floor(Math.random() * todasLasRarezas.length);
-        const rarezaConDescuento = todasLasRarezas[indiceRareza];
+      //Selecciona rareza aleatoria
+      const indiceRareza = Math.floor(Math.random() * todasLasRarezas.length);
+      const rarezaConDescuento = todasLasRarezas[indiceRareza];
 
-        // Definimos porcentaje de descuento aleatorio 
-        const porcentajeMinimo = 10;
-        const porcentajeMaximo = 35;
-        const porcentajeDescuento = Math.floor(Math.random() * (porcentajeMaximo - porcentajeMinimo + 1)) + porcentajeMinimo;
-      
-        mercadoActual = aplicarDescuentoPorRareza(rarezaConDescuento, porcentajeDescuento); 
-        
+      // Definimos porcentaje de descuento aleatorio 
+      const porcentajeMinimo = 10;
+      const porcentajeMaximo = 35;
+      const porcentajeDescuento = Math.floor(Math.random() * (porcentajeMaximo - porcentajeMinimo + 1)) + porcentajeMinimo;
+
+      mercadoActual = aplicarDescuentoPorRareza(rarezaConDescuento, porcentajeDescuento);
+
     }
-    
+
     showScene('scene-2');
+    const dineroDisplay = document.createElement("p");
+    dineroDisplay.id = 'player-dinero';
+    dineroDisplay.textContent = `💰 Dinero: ${EUR.format(jugador.dinero)}`;
+    document.getElementById('scene-2').prepend(dineroDisplay);
     // Mostrar footer vacío a partir del mercado
     const footer = document.getElementById('inventory-container');
     footer.style.display = 'flex';
@@ -85,9 +93,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   const enemigos = [
-    new Enemigo('Goblin', 12, 50,'image/Orcoh.jpg'),
-    new Enemigo('Orco', 25, 80,'image/Gobln.jpg'),
-    new JefeFinal('Dragón rojo', 40, 120, 'Llama infernal', 1.8,'image/dragon.jpg'),
+    new Enemigo('Goblin', 12, 20, 'image/Orcoh.jpg'),
+    new Enemigo('Orco', 25, 40, 'image/Gobln.jpg'),
+    new JefeFinal('Dragón rojo', 30, 40, 'Llama infernal', 1.8, 'image/dragon.jpg'),
   ];
 
 
@@ -95,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const selecMercado = [];
   function renderMercado() {
     const containerMercado = document.getElementById('market-container');
-    const footer = document.getElementById('inventory-container'); 
+    const footer = document.getElementById('inventory-container');
     containerMercado.innerHTML = mercadoActual.map((p, i) => `
       <div class="producto" data-index="${i}">
       ${p.mostrarProducto()}
@@ -146,6 +154,14 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      let totalCompra = selecMercado.reduce((acc, item) => acc + item.precio, 0);
+      if (totalCompra > jugador.dinero) {
+        alert("No tienes suficiente dinero para esta compra.");
+        return;
+      }
+      jugador.dinero -= totalCompra;
+      document.getElementById('player-dinero').textContent = `💰 Dinero: ${EUR.format(jugador.dinero)}`;
+
       selecMercado.forEach(p => jugador.añadirItem(p));
       showScene('scene-3');
       renderJugador();
@@ -163,6 +179,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <p>⚔️ Ataque total: ${jugador.ataqueTotal}</p>
         <p>🛡️ Defensa total: ${jugador.defensaTotal}</p>
         <p>⭐ Puntos: ${jugador.puntos}</p>
+        <p>💰 Dinero: ${jugador.dinero} €</p>
          </div>
         `;
 
@@ -219,10 +236,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const resultado = batalla(jugador, enemigo);
     const salidaBatalla = document.getElementById('battle-output');
 
-document.getElementById("battle-player-img").src = jugador.avatar;
-document.getElementById("battle-player-name").textContent = jugador.nombre;
-document.getElementById("battle-enemy-img").src = enemigo.imagen;
-document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
+    document.getElementById("battle-player-img").src = jugador.avatar;
+    document.getElementById("battle-player-name").textContent = jugador.nombre;
+    document.getElementById("battle-enemy-img").src = enemigo.imagen;
+    document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
 
 
     salidaBatalla.innerHTML = `
@@ -231,25 +248,29 @@ document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
       <h4>Registro del combate:</h4>
       <div class="combat-log">${resultado.historialBatallas.map(mensaje => `<p>${mensaje}</p>`).join('')}</div>   
       <p>Ganador:<strong> ${resultado.ganador}</strong></p>
-      <p>Puntos obtenidos:<strong> +${resultado.puntosGanados}</strong></p>      
+      <p>Puntos obtenidos:<strong> +${resultado.puntosGanados}</strong></p>
+      <p>Dinero ganado:<strong> 💰 ${resultado.dineroGanado}</strong></p>      
     `;
     contadorBatalla++;
     document.getElementById('btn-next-battle').onclick = renderBatallas;
   }
 
+
   // escena de resultado final 
   function renderResultado() {
     const nivel = agruparPorNivel([jugador], 250);
     const containerResultado = document.getElementById('final-result');
+    // const btnLocalStore = document.createElement("button");
+    // containerResultado.appendChild(btnLocalStore)
 
     let mensajeNivel;
     if (nivel.pro && nivel.pro.length > 0) {
       mensajeNivel = '🏆 Eres un VETERANO 🏆';
       if (typeof confetti === 'function') {
         confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
         });
       }
 
@@ -259,6 +280,7 @@ document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
     containerResultado.innerHTML = `
       <h2>${mensajeNivel}</h2>
       <p>Puntos totales: ${jugador.puntos}</p>
+       <p>💰 Dinero: ${jugador.dinero} €</p> 
     `;
     document.getElementById('btn-restart').onclick = () => location.reload();
   }

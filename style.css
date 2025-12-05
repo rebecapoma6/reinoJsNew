@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 :root {
@@ -34,7 +35,7 @@ main {
   border-radius: 12px;
   padding: 24px;
   margin-bottom: 32px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -42,8 +43,26 @@ main {
   display: block;
 }
 
+/* .scene {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  position: absolute;  
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scene.active {
+  opacity: 1;
+  visibility: visible;
+}
+ */
+
 /* ===================== HEADER & FOOTER ===================== */
-header, footer {
+header,
+footer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,14 +126,18 @@ button:hover {
 .player-card {
   display: flex;
   flex-direction: column;
-  align-items: center; /* centra todo horizontalmente */
-  gap: 10px; /* separación entre elementos */
+  align-items: center;
+  /* centra todo horizontalmente */
+  gap: 10px;
+  /* separación entre elementos */
   background-color: var(--card-color);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  max-width: 300px; /* ancho máximo */
-  margin: 0 auto; /* centra el contenedor en su sección */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 300px;
+  /* ancho máximo */
+  margin: 0 auto;
+  /* centra el contenedor en su sección */
 }
 
 .player-card .avatar {
@@ -122,7 +145,7 @@ button:hover {
   height: 280px;
 
   object-fit: contain;
-  
+
 }
 
 
@@ -137,7 +160,7 @@ button:hover {
   padding: 8px;
   gap: 8px;
   justify-content: center;
-   display: none;
+  display: none;
 }
 
 .item {
@@ -155,7 +178,7 @@ button:hover {
 
 .item:hover {
   transform: scale(1.2);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .item img {
@@ -176,7 +199,8 @@ button:hover {
 
 }
 
-.battle-player, .battle-enemy {
+.battle-player,
+.battle-enemy {
   text-align: center;
 
 }
@@ -185,8 +209,8 @@ button:hover {
   width: 280px;
   height: 280px;
   object-fit: contain;
-  
- 
+
+
 }
 
 .battle-vs {
@@ -196,21 +220,24 @@ button:hover {
 }
 
 /* ===================== CUADRÍCULAS ===================== */
-#market-container, #enemies-container {
-   display: grid;
-   grid-template-columns: repeat(5, minmax(140px, 1fr)); /* máximo 5 columnas */
-   grid-auto-rows: auto;
-   gap: 16px;
-   justify-items: center;
+#market-container,
+#enemies-container {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+  /* máximo 5 columnas */
+  grid-auto-rows: auto;
+  gap: 16px;
+  justify-items: center;
 }
 
 
 
-.producto, .enemy-card {
+.producto,
+.enemy-card {
   background-color: var(--card-color);
   border-radius: 8px;
   padding: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
@@ -246,9 +273,10 @@ button:hover {
 }
 
 
-.producto:hover, .enemy-card:hover {
+.producto:hover,
+.enemy-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
 /* ===================== ANIMACIÓN PRODUCTO AÑADIDO ===================== */
@@ -258,13 +286,76 @@ button:hover {
 }
 
 @keyframes flash {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
+
+@keyframes mover {
+  from {
+    transform: translateX(-300px);
+  }
+
+  to {
+    transform: translateX(100px);
+  }
+}
+
+#card-2 {
+
+  animation: mover 2s ease-in-out;
+}
+
+/*****************************/
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+
+
+}
+
+.card {
+  padding: 2rem;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  /* opacity: 0; */
+  /* invisibles al inicio */
+  /* transform: translateY(80px); */
+  /* TODO: Deben iniciarse invisibles y desplazadas hacia abajo unos 50px*/
+}
+
+
+@keyframes mover2 {
+  from {
+    opacity: 5; 
+    transform: translateY(600);
+  }
+  to {
+    transform: translateY(600px);
+  }
+}
+
+#tarjeta{
+  
+  animation: mover2 2s ease-in-out ;
+}
+
+
+
 /* ===================== ANIMACIÓN BATALLA ===================== */
-.player-img, .enemy-img {
+.player-img,
+.enemy-img {
   position: relative;
   transition: transform 0.7s ease;
 }
@@ -309,6 +400,35 @@ button:hover {
   text-align: center;
 }
 
+
+/* ===================== GANAR DINERO ===================== */
+#dinero-ganado {
+  display: inline-block;
+}
+
+.dinero-gana {
+  animation: popUp 0.8s ease-out;
+}
+
+@keyframes popUp {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+
+  40% {
+    transform: scale(1.6);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 640px) {
   #inventory-container {
@@ -316,7 +436,8 @@ button:hover {
     gap: 6px;
   }
 
-  #market-container, #enemies-container {
+  #market-container,
+  #enemies-container {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 }
@@ -338,5 +459,3 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-

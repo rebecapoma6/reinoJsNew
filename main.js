@@ -93,9 +93,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   const enemigos = [
-    new Enemigo('Goblin', 12, 20, 'image/Orcoh.jpg'),
-    new Enemigo('Orco', 25, 40, 'image/Gobln.jpg'),
-    new JefeFinal('Dragón rojo', 30, 40, 'Llama infernal', 1.8, 'image/dragon.jpg'),
+    new Enemigo('Goblin', 12, 70, 'image/Orcoh.jpg'),
+    new Enemigo('Orco', 25, 80, 'image/Gobln.jpg'),
+    new JefeFinal('Dragón rojo', 30, 120, 'Llama infernal', 1.8, 'image/dragon.jpg'),
   ];
 
 
@@ -109,7 +109,6 @@ window.addEventListener('DOMContentLoaded', () => {
       ${p.mostrarProducto()}
         <button class="select-btn">Seleccionar</button>
       </div>`).join('');
-
 
     const containerTotal = document.createElement("div");
     containerTotal.id = "market-total";
@@ -154,7 +153,7 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      let totalCompra = selecMercado.reduce((acc, item) => acc + item.precio, 0);
+      const totalCompra = selecMercado.reduce((acc, item) => acc + item.precio, 0);
       if (totalCompra > jugador.dinero) {
         alert("No tienes suficiente dinero para esta compra.");
         return;
@@ -224,7 +223,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 
-
   let contadorBatalla = 0; //este sera el contador de batallas
   function renderBatallas() {
     if (contadorBatalla >= enemigos.length) {
@@ -241,6 +239,12 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById("battle-enemy-img").src = enemigo.imagen;
     document.getElementById("battle-enemy-name").textContent = enemigo.nombre;
 
+    document.getElementById("battle-enemy-img").classList.add("danio");
+    setTimeout(() => {
+      document.getElementById("battle-enemy-img").classList.remove("danio");
+    }, 300);
+
+
 
     salidaBatalla.innerHTML = `
       <h3>Batalla ${contadorBatalla + 1}</h3>
@@ -249,8 +253,16 @@ window.addEventListener('DOMContentLoaded', () => {
       <div class="combat-log">${resultado.historialBatallas.map(mensaje => `<p>${mensaje}</p>`).join('')}</div>   
       <p>Ganador:<strong> ${resultado.ganador}</strong></p>
       <p>Puntos obtenidos:<strong> +${resultado.puntosGanados}</strong></p>
-      <p>Dinero ganado:<strong> 💰 ${resultado.dineroGanado}</strong></p>      
+      <p>Dinero ganado:<strong> 💰 ${resultado.dineroGanado}</strong></p>    
     `;
+    
+    const dineroTexto = document.querySelector("#dinero-ganado");
+    dineroTexto.classList.add("dinero-gana");
+    setTimeout(() => dineroTexto.classList.remove("dinero-gana"), 800);
+
+
+
+
     contadorBatalla++;
     document.getElementById('btn-next-battle').onclick = renderBatallas;
   }

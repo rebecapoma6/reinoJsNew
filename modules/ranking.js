@@ -60,9 +60,12 @@ export function batalla(jugador, enemigo) {
     puntosGanados = 100 + enemigo.ataque;
     if (enemigo.tipo === "jefe")  {
       puntosGanados *= enemigo.multiplicador;
+      dineroGanado = 10;
+    }else{
+      dineroGanado = 5;
     }
-    dineroGanado = 50 + Math.round(Math.random() * 50);
-    jugador.dinero += dineroGanado;
+    // dineroGanado = 50 + Math.round(Math.random() * 50);
+    // jugador.dinero += dineroGanado;
   }
   // Sumar los puntos al jugador
   jugador.puntos += puntosGanados;

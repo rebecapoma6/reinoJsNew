@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script type="module" src="./main.js" defer></script>
+  <script src="script.js" defer></script>
   <link rel='stylesheet' type='text/css' href='style.css'>
   <title>ReinoJs</title>
 </head>
@@ -15,8 +16,21 @@
     <h1 id="title">Aventura en el reino</h1>
   </header>
   <main>
+   
+
     <!-- Escena 1: Estado inicial -->
     <div id="scene-1" class="scene active">
+       <div class="container">
+        <div class="card" id="tarjeta">
+            <img src="image/moneda.png" alt="" style="width: 80px;height: 80px;">
+        </div>
+        <div class="card" id="tarjeta">
+            <img src="image/moneda.png"alt="" style="width: 80px;height: 80px;">
+        </div>
+        <div class="card" id="tarjeta">
+            <img src="image/moneda.png" alt="" style="width: 80px;height: 80px;">
+        </div>
+    </div>
       <div id="ocultar">
         <label for="player-name-input">Introduce tu nombre:</label>
         <input type="text" id="player-name-input" placeholder="Tu nombre..." />
@@ -32,7 +46,9 @@
       <button id="btn-to-market">Continuar</button>
     </div>
 
-
+<div class="cards" id="card-2">
+  <img src="image/monedero.png" alt="" style="width: 120px;height: 120px;">
+</div>
     <!-- Escena 2: Mercado -->
     <div id="scene-2" class="scene">
       <h2>🏪 Mercado de productos</h2>
